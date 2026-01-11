@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets - never commit these
+**/client_secret*.json
+**/*firebase-adminsdk*.json
+**/*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.*.json
