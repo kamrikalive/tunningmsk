@@ -1,10 +1,13 @@
+// app/types.ts
 export interface Product {
   id: string;
   name: string;
   description: string;
-  image: string; // Главное изображение
-  images?: string[]; // Дополнительные изображения
-  video?: string; // Видео (опционально)
+  price: number;        // Новое поле: Цена
+  oldPrice?: number;    // Новое поле: Старая цена (для скидки)
+  image: string;
+  images?: string[];
+  video?: string;
   features: string[];
   specifications?: {
     label: string;
