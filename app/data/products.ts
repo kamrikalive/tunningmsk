@@ -70,7 +70,7 @@ export const products: Product[] = [
       '/products/3/photo_5393137021833907703_y.jpg',
       '/products/3/photo_5393137021833907704_y.jpg'
     ],
-    video: '/products/3/document_5393137021373940699.mp4',
+    video: 'https://storage.yandexcloud.net/relaxdev/document_5393137021373940699.mp4',
     features: [
       'Премиальный внешний вид',
       'Выдерживают вес двух человек',
