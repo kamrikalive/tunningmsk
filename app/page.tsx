@@ -10,7 +10,7 @@ const BACKGROUND_IMAGE_URL = 'https://storage.yandexcloud.net/relaxdev/tunning/b
 // 🔴 2. ПРЕВЬЮ ДЛЯ МЕССЕНДЖЕРОВ (Переведено)
 export const metadata: Metadata = {
   title: 'TUNING MSK | Премиум пороги и аксессуары',
-  description: 'Тюнинг для GAC, Geely, Kia. Установка в Москве, доставка по РФ. Измени характер своего авто.',
+  description: 'Тюнинг для GAC, Geely, BMW. Установка в Москве, доставка по РФ. Измени характер своего авто.',
   openGraph: {
     title: 'TUNING MSK - Тюнинг, который меняет характер',
     description: 'Премиальные решения для вашего авто. Переходите в каталог!',
