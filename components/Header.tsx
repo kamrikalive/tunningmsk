@@ -1,6 +1,7 @@
 export default function Header() {
   return (
-    <header className="w-full bg-black/90 backdrop-blur-sm text-white py-4 px-4 sticky top-0 z-50 shadow-lg">
+    // Изменил z-50 на z-40
+    <header className="w-full bg-black/90 backdrop-blur-sm text-white py-4 px-4 sticky top-0 z-40 shadow-lg transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
           TUNING MSK SHOP
