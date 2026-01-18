@@ -10,7 +10,6 @@ const inter = Inter({
 });
 
 // Ссылки на ресурсы
-const LOGO_URL = 'https://storage.yandexcloud.net/relaxdev/tunning/logo.jpg';
 const BACKGROUND_IMAGE_URL = 'https://storage.yandexcloud.net/relaxdev/tunning/bg.png';
 
 // 1. Настройка Viewport
@@ -22,19 +21,69 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "TUNING MSK SHOP | Тюнинг и аксессуары",
-  description: "Премиальные пороги и аксессуары для GAC, Geely, Kia. Установка в Москве, доставка по РФ.",
+  // Обновил Title для лучшего SEO (добавил "Москва" и "Установка")
+  title: "TUNING MSK | Пороги и Тюнинг с установкой в Москве",
+  description: "Премиальные пороги, спойлеры и обвесы для GAC, Geely, Changan, Haval. Профессиональная установка тюнинга в Москве. Доставка по всей России.",
   
-  // 2. SEO: Роботы и Верификация
-  robots: {
-    index: true,
-    follow: true,
-  },
-  verification: {
-    // Сюда можно добавить коды верификации, если не хотите использовать файлы
-    // google: 'ващ_код_из_google_search_console',
-    // yandex: 'ваш_код_из_yandex_webmaster',
-  },
+  // 2. ОГРОМНЫЙ СПИСОК КЛЮЧЕВЫХ СЛОВ
+  keywords: [
+    // --- Основные услуги и гео ---
+    "тюнинг авто Москва",
+    "установка порогов в Москве",
+    "купить пороги на авто",
+    "магазин тюнинга",
+    "тюнинг ателье Москва",
+    "установка обвесов",
+    "боковые подножки купить",
+    "ступени для внедорожников",
+    "автоаксессуары Москва",
+    "детейлинг и тюнинг",
+    "доставка тюнинга по России",
+    
+    // --- Конкретные товары ---
+    "пороги алюминиевые",
+    "спойлер на багажник",
+    "лип спойлер купить",
+    "защита бампера",
+    "обвесы на авто",
+    "пороги OEM style",
+    "оригинальные пороги",
+    
+    // --- Бренды и Модели (Самое важное для поиска) ---
+    // GAC
+    "пороги GAC GS8",
+    "тюнинг GAC GS8 II",
+    "аксессуары GAC",
+    // Geely
+    "пороги Geely Monjaro",
+    "пороги Geely Coolray",
+    "пороги Geely Tugella",
+    "пороги Geely Okavango",
+    "тюнинг Джили Монджаро",
+    // Changan
+    "пороги Changan UNI-K",
+    "тюнинг Changan UNI-V",
+    "пороги Чанган",
+    // Haval & Tank
+    "пороги Haval F7",
+    "пороги Haval Jolion",
+    "пороги Tank 300",
+    "пороги Tank 500",
+    // Kia & Hyundai
+    "пороги Kia Sportage 4",
+    "пороги Kia Sorento",
+    "тюнинг Киа Спортейдж",
+    // BMW & Premium
+    "пороги BMW X5 F15",
+    "спойлер BMW X6 E71",
+    "тюнинг BMW X5",
+    
+    // --- Китайские авто (общие) ---
+    "тюнинг китайских авто",
+    "пороги на Exeed",
+    "пороги на Chery Tiggo",
+    "аксессуары для китайских машин"
+  ],
 
   // 3. PWA Манифест
   manifest: '/site.webmanifest',
@@ -60,8 +109,8 @@ export const metadata: Metadata = {
   // 5. Open Graph (Соцсети)
   openGraph: {
     title: 'TUNING MSK - Тюнинг, который меняет характер',
-    description: 'Премиальные решения для вашего авто. Переходите в каталог!',
-    url: 'https://tuning-msk.ru', 
+    description: 'Премиальные решения для вашего авто. Установка в Москве и доставка по РФ.',
+    url: 'https://tuningmskshop.ru', 
     siteName: 'TUNING MSK',
     images: [
       {

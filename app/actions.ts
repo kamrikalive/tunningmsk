@@ -1,7 +1,17 @@
-// app/actions.ts
 'use server';
 
 import { OrderFormData } from './types';
+
+// Исправлено: text теперь может быть undefined
+function escapeHtml(text: string | undefined): string {
+  if (!text) return ''; // Если пусто, возвращаем пустую строку
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 export async function submitOrder(formData: OrderFormData) {
   const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -9,17 +19,22 @@ export async function submitOrder(formData: OrderFormData) {
 
   if (!telegramBotToken || !chatId) {
     console.error("Telegram token or chat ID is not configured.");
-    return { success: false, message: "Ошибка конфигурации сервера." };
+    return { success: false, message: "Ошибка конфигурации сервера (нет токена)." };
   }
 
-  // Используем HTML разметку, она надежнее для ввода пользователей
+  // Теперь ошибки типов не будет
+  const safeName = escapeHtml(formData.name);
+  const safePhone = escapeHtml(formData.phone);
+  const safeProduct = escapeHtml(formData.productName);
+  const safeSocial = escapeHtml(formData.social || 'Не указана');
+
   const message = `
 🎯 <b>Новый заказ!</b>
 
-<b>Товар:</b> ${formData.productName}
-<b>Имя:</b> ${formData.name}
-<b>Телефон:</b> <code>${formData.phone}</code>
-<b>Соцсеть:</b> ${formData.social || 'Не указана'}
+<b>Товар:</b> ${safeProduct}
+<b>Имя:</b> ${safeName}
+<b>Телефон:</b> <code>${safePhone}</code>
+<b>Соцсеть:</b> ${safeSocial}
 <i>Время: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}</i>
   `;
 
@@ -30,7 +45,7 @@ export async function submitOrder(formData: OrderFormData) {
       body: JSON.stringify({
         chat_id: chatId,
         text: message,
-        parse_mode: 'HTML' // HTML безопаснее для пользовательского ввода
+        parse_mode: 'HTML'
       }),
     });
 
@@ -38,13 +53,16 @@ export async function submitOrder(formData: OrderFormData) {
 
     if (!result.ok) {
       console.error("Telegram API Error:", result);
-      return { success: false, message: "Не удалось отправить заказ. Попробуйте позже." };
+      return { 
+        success: false, 
+        message: `Ошибка Telegram: ${result.description || 'Неизвестная ошибка'}` 
+      };
     }
 
     return { success: true, message: "Заказ успешно отправлен!" };
 
   } catch (error) {
     console.error("Fetch Error:", error);
-    return { success: false, message: "Сетевая ошибка при отправке заказа." };
+    return { success: false, message: "Сетевая ошибка при отправке." };
   }
 }

@@ -20,10 +20,51 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
 
   if (!isOpen) return null;
 
+  // --- МАСКА ДЛЯ ТЕЛЕФОНА ---
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    
+    // Если стерли всё - очищаем
+    if (!value) {
+      setPhone('');
+      return;
+    }
+
+    // Оставляем только цифры
+    let digits = value.replace(/\D/g, '');
+
+    // Если цифр нет (например, ввели букву) - выходим
+    if (!digits) return;
+
+    // Логика подмены первой цифры (чтобы 8 или 9 превращались в +7)
+    if (digits[0] === '8') digits = '7' + digits.slice(1);
+    else if (digits[0] === '9') digits = '7' + digits;
+    else if (digits[0] !== '7') digits = '7' + digits; // Если начали с любой другой цифры
+
+    // Ограничиваем длину (7 + 10 цифр номера = 11)
+    digits = digits.substring(0, 11);
+
+    // Собираем красивую строку
+    let formatted = '+7';
+    if (digits.length > 1) formatted += ` (${digits.slice(1, 4)}`;
+    if (digits.length > 4) formatted += `) ${digits.slice(4, 7)}`;
+    if (digits.length > 7) formatted += `-${digits.slice(7, 9)}`;
+    if (digits.length > 9) formatted += `-${digits.slice(9, 11)}`;
+
+    setPhone(formatted);
+  };
+  // ---------------------------
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    // Простая валидация длины номера перед отправкой
+    if (phone.length < 18) { // Длина полного формата "+7 (XXX) XXX-XX-XX" — 18 символов
+      setError('Пожалуйста, введите корректный номер телефона');
+      return;
+    }
 
     startTransition(async () => {
       const result = await submitOrder({
@@ -52,7 +93,7 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
       
-      {/* Контейнер окна (Темная тема, как у сайта) */}
+      {/* Контейнер окна */}
       <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto relative">
         
         {/* Шапка */}
@@ -70,7 +111,6 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
         </div>
 
         <div className="p-6">
-          {/* Информация о товаре */}
           <div className="mb-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
             <p className="text-sm text-gray-400 mb-1">Вы заказываете:</p>
             <p className="font-semibold text-blue-400 text-lg leading-tight">{product.name}</p>
@@ -78,7 +118,6 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
 
           <form onSubmit={handleSubmit} className="space-y-4">
             
-            {/* Поле Имя */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Имя *</label>
               <input 
@@ -87,13 +126,12 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
                 required 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
-                // Стили инпута: темный фон, белый текст, синяя рамка при фокусе
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" 
                 placeholder="Как к вам обращаться?" 
               />
             </div>
 
-            {/* Поле Телефон */}
+            {/* ПОЛЕ С МАСКОЙ */}
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">Телефон *</label>
               <input 
@@ -101,13 +139,12 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
                 id="phone" 
                 required 
                 value={phone} 
-                onChange={(e) => setPhone(e.target.value)} 
+                onChange={handlePhoneChange} 
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" 
                 placeholder="+7 (999) 000-00-00" 
               />
             </div>
 
-            {/* Поле Соцсеть */}
             <div>
               <label htmlFor="social" className="block text-sm font-medium text-gray-300 mb-2">Telegram / WhatsApp</label>
               <input 
@@ -120,7 +157,6 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
               />
             </div>
 
-            {/* Сообщения об успехе/ошибке */}
             {success && (
               <div className="p-4 bg-green-900/30 border border-green-500/30 rounded-lg text-green-400 text-sm flex items-center gap-2">
                 <span>✅</span> {success}
@@ -132,7 +168,6 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
               </div>
             )}
 
-            {/* Кнопки */}
             <div className="flex gap-3 pt-4">
               <button 
                 type="button" 
@@ -151,7 +186,6 @@ export default function OrderModal({ product, isOpen, onClose }: OrderModalProps
             </div>
           </form>
 
-          {/* Футер модалки */}
           <div className="mt-6 pt-6 border-t border-gray-800 text-center">
              <p className="text-xs text-gray-500">
                Нажимая кнопку, вы соглашаетесь с условиями обработки данных
