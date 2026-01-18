@@ -1,42 +1,98 @@
 // app/page.tsx
+import Header from '@/components/Header';
+// У вас Header в layout, поэтому здесь он не нужен, убираем импорт если он был,
+// но судя по прошлому коду, вы хотели чистый page.tsx.
+// Оставляем только контент.
+
 import ProductCard from '@/components/ProductCard';
 import { products } from './data/products';
 
-// Ссылку на фон берем ту же, что и в layout, но здесь она нужна только для визуального отображения
+// Ссылку на фон берем ту же, что и в layout
 const BACKGROUND_IMAGE_URL = 'https://storage.yandexcloud.net/relaxdev/tunning/bg.png';
 
 export default function Home() {
+  
+  // --- ГЕНЕРАЦИЯ SCHEMA.ORG (JSON-LD) ---
+  // Это "паспорт" сайта для роботов. Он расскажет о товарах и видео.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      // 1. Информация о магазине
+      {
+        "@type": "Organization",
+        "name": "TUNING MSK",
+        "url": "https://tuning-msk.ru",
+        "logo": "https://storage.yandexcloud.net/relaxdev/tunning/logo.jpg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+7-917-547-68-87",
+          "contactType": "customer service",
+          "areaServed": "RU",
+          "availableLanguage": "Russian"
+        }
+      },
+      // 2. Список товаров и Видео
+      ...products.map((product) => {
+        const schema: any = {
+          "@type": "Product",
+          "name": product.name,
+          "image": product.image.startsWith('http') ? product.image : `https://tuning-msk.ru${product.image}`,
+          "description": product.description,
+          "sku": product.id,
+          "offers": {
+            "@type": "Offer",
+            "url": `https://tuning-msk.ru/#catalog`, // Ссылка на каталог
+            "priceCurrency": "RUB",
+            "price": product.price,
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition"
+          }
+        };
+
+        // Если у товара есть видео, добавляем VideoObject
+        if (product.video) {
+          schema.subjectOf = {
+            "@type": "VideoObject",
+            "name": `Видео обзор: ${product.name}`,
+            "description": product.description,
+            "thumbnailUrl": product.image.startsWith('http') ? product.image : `https://tuning-msk.ru${product.image}`, // Превью видео = фото товара
+            "uploadDate": "2024-01-01T00:00:00+03:00", // Дата загрузки (обязательно для Google)
+            "contentUrl": product.video, // Ссылка на сам файл видео
+            "embedUrl": product.video,
+            "duration": "PT0M50S" // Примерная длительность (50 сек), можно не менять
+          };
+        }
+
+        return schema;
+      })
+    ]
+  };
+
   return (
-    // Убрали лишние классы фона, так как он есть в layout, но добавим локальный фон для контента
     <div className="min-h-screen text-white selection:bg-blue-500/30">
       
-      {/* --- ГЛОБАЛЬНЫЙ ФОН СТРАНИЦЫ --- */}
-      {/* (Дублируем здесь визуально, если в layout он не задан явно как div, 
-          либо можно оставить только в layout. Но для надежности оставим здесь.) */}
+      {/* Вставляем JSON-LD в код страницы */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      {/* --- ГЛОБАЛЬНЫЙ ФОН СТРАНИЦЫ (Локальный, если layout не перекрывает) --- */}
       <div className="fixed inset-0 z-0">
-        {/* Слой 1: Фоновое изображение */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000"
           style={{ backgroundImage: `url('${BACKGROUND_IMAGE_URL}')` }}
         ></div>
-
-        {/* Слой 2: Затемнение (50%) */}
         <div className="absolute inset-0 bg-black/50"></div>
-
-        {/* Слой 3: Акцентный синий градиент */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-black opacity-50"></div>
-        
-        {/* Слой 4: Шум */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
       </div>
       
       <div className="relative z-10">
-        {/* Header убран, так как он теперь в layout.tsx */}
         
         <main>
           {/* HERO SECTION */}
           <section className="relative pt-20 pb-32 overflow-hidden">
-            {/* Декоративное пятно света */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] -z-10"></div>
             
             <div className="max-w-7xl mx-auto px-4 text-center">
@@ -88,7 +144,6 @@ export default function Home() {
 
           {/* CATALOG */}
           <section id="catalog" className="max-w-7xl mx-auto px-4 py-20 relative">
-             {/* Локальное затемнение */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/70 to-black z-0 pointer-events-none"></div>
 
             <div className="relative z-10">
@@ -106,8 +161,6 @@ export default function Home() {
                 </div>
             </div>
           </section>
-
-          {/* Footer убран, так как он теперь в layout.tsx */}
         </main>
       </div>
     </div>
