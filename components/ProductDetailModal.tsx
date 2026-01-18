@@ -2,7 +2,7 @@
 
 import { Product } from '@/app/types';
 import Image from 'next/image';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, TouchEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { TransformWrapper, TransformComponent, ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 
@@ -19,6 +19,56 @@ export default function ProductDetailModal({ product, isOpen, onClose, onOrder }
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
+
+  // --- ЛОГИКА СВАЙПА (НОВОЕ) ---
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  // Формируем единый массив слайдов для навигации
+  const allImages = [product.image, ...(product.images || [])];
+  const uniqueImages = Array.from(new Set(allImages));
+  const slides = product.video ? [...uniqueImages, product.video] : uniqueImages;
+
+  // Поиск индекса текущего медиа
+  const currentIndex = slides.indexOf(activeMedia || '');
+
+  const onTouchStart = (e: TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) handleNextSlide();
+    if (isRightSwipe) handlePrevSlide();
+  };
+
+  // Функции навигации
+  const handleNextSlide = () => {
+    const nextIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+    selectSlideByIndex(nextIndex);
+  };
+
+  const handlePrevSlide = () => {
+    const prevIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+    selectSlideByIndex(prevIndex);
+  };
+
+  const selectSlideByIndex = (index: number) => {
+    const media = slides[index];
+    const isVid = product.video === media;
+    handleMediaSelect(media, isVid);
+  };
+  // -----------------------------
 
   useEffect(() => {
     setMounted(true);
@@ -44,9 +94,6 @@ export default function ProductDetailModal({ product, isOpen, onClose, onOrder }
   }, [isFullscreen]);
 
   if (!isOpen || !product || !mounted) return null;
-
-  const allImages = [product.image, ...(product.images || [])];
-  const uniqueImages = Array.from(new Set(allImages));
   
   const handleMediaSelect = (mediaUrl: string, isVideoType: boolean) => {
     setActiveMedia(mediaUrl);
@@ -76,18 +123,21 @@ export default function ProductDetailModal({ product, isOpen, onClose, onOrder }
         </button>
 
         {/* ЛЕВАЯ ЧАСТЬ: Медиа */}
-        <div className="w-full md:w-1/2 bg-black flex flex-col">
+        <div className="w-full md:w-1/2 bg-black flex flex-col group relative">
           
+          {/* Главный экран просмотра со свайпом */}
           <div 
-            className="relative h-64 md:h-[400px] w-full group flex items-center justify-center bg-black"
+            className="relative h-64 md:h-[400px] w-full flex items-center justify-center bg-black touch-pan-y"
             onClick={() => !isVideo && setIsFullscreen(true)} 
             style={{ cursor: isVideo ? 'default' : 'zoom-in' }}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
           >
             {activeMedia && (
               isVideo ? (
-                // --- ИСПРАВЛЕННЫЙ ВИДЕО ПЛЕЕР ---
                 <video 
-                  key={activeMedia} // ВАЖНО: Ключ заставляет React пересоздать плеер при смене видео
+                  key={activeMedia}
                   src={activeMedia} 
                   controls 
                   className="w-full h-full object-contain"
@@ -103,6 +153,7 @@ export default function ProductDetailModal({ product, isOpen, onClose, onOrder }
                     fill
                     className="object-contain"
                     unoptimized
+                    draggable={false}
                   />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,6 +162,24 @@ export default function ProductDetailModal({ product, isOpen, onClose, onOrder }
                   </div>
                 </>
               )
+            )}
+
+            {/* Стрелки навигации внутри деталки (скрываем на тач, показываем на ховер) */}
+            {slides.length > 1 && (
+                <>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); handlePrevSlide(); }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-3 bg-black/40 text-white rounded-full opacity-0 group-hover:opacity-100 hover:bg-blue-600 transition-all z-10"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); handleNextSlide(); }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-black/40 text-white rounded-full opacity-0 group-hover:opacity-100 hover:bg-blue-600 transition-all z-10"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </button>
+                </>
             )}
           </div>
 
