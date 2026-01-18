@@ -1,39 +1,18 @@
 // app/page.tsx
-import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import { products } from './data/products';
-import type { Metadata } from 'next';
 
-// 🔴 1. ВАШ НОВЫЙ ФОН
+// Ссылку на фон берем ту же, что и в layout, но здесь она нужна только для визуального отображения
 const BACKGROUND_IMAGE_URL = 'https://storage.yandexcloud.net/relaxdev/tunning/bg.png';
-
-// 🔴 2. ПРЕВЬЮ ДЛЯ МЕССЕНДЖЕРОВ (Переведено)
-export const metadata: Metadata = {
-  title: 'TUNING MSK | Премиум пороги и аксессуары',
-  description: 'Тюнинг для GAC, Geely, . Установка в Москве, доставка по РФ. Измени характер своего авто.',
-  openGraph: {
-    title: 'TUNING MSK - Тюнинг, который меняет характер',
-    description: 'Премиальные решения для вашего авто. Переходите в каталог!',
-    url: 'https://bbap50giju3f5sksqk35.containers.yandexcloud.net/',
-    siteName: 'TUNING MSK',
-    images: [
-      {
-        url: BACKGROUND_IMAGE_URL,
-        width: 1200,
-        height: 630,
-        alt: 'TUNING MSK Preview',
-      },
-    ],
-    locale: 'ru_RU',
-    type: 'website',
-  },
-};
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-blue-500/30">
+    // Убрали лишние классы фона, так как он есть в layout, но добавим локальный фон для контента
+    <div className="min-h-screen text-white selection:bg-blue-500/30">
       
-      {/* --- ГЛОБАЛЬНЫЙ ФОН --- */}
+      {/* --- ГЛОБАЛЬНЫЙ ФОН СТРАНИЦЫ --- */}
+      {/* (Дублируем здесь визуально, если в layout он не задан явно как div, 
+          либо можно оставить только в layout. Но для надежности оставим здесь.) */}
       <div className="fixed inset-0 z-0">
         {/* Слой 1: Фоновое изображение */}
         <div 
@@ -41,19 +20,18 @@ export default function Home() {
           style={{ backgroundImage: `url('${BACKGROUND_IMAGE_URL}')` }}
         ></div>
 
-        {/* Слой 2: Затемнение (50%, чтобы фон был виден, но текст читался) */}
+        {/* Слой 2: Затемнение (50%) */}
         <div className="absolute inset-0 bg-black/50"></div>
 
-        {/* Слой 3: Акцентный синий градиент (прозрачный) */}
+        {/* Слой 3: Акцентный синий градиент */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-black opacity-50"></div>
         
-        {/* Слой 4: Шум для текстуры */}
+        {/* Слой 4: Шум */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
       </div>
-      {/* ----------------------- */}
       
       <div className="relative z-10">
-        <Header />
+        {/* Header убран, так как он теперь в layout.tsx */}
         
         <main>
           {/* HERO SECTION */}
@@ -110,7 +88,7 @@ export default function Home() {
 
           {/* CATALOG */}
           <section id="catalog" className="max-w-7xl mx-auto px-4 py-20 relative">
-             {/* Локальное затемнение только под каталогом */}
+             {/* Локальное затемнение */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/70 to-black z-0 pointer-events-none"></div>
 
             <div className="relative z-10">
@@ -129,17 +107,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* FOOTER */}
-          <footer className="border-t border-white/10 bg-black/80 backdrop-blur-xl py-12 relative z-10">
-            <div className="max-w-7xl mx-auto px-4 text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">TUNING MSK SHOP</h3>
-              <p className="text-gray-400 mb-6">Делаем ваши автомобили лучше с 2020 года</p>
-              <div className="flex justify-center gap-6 text-sm text-gray-400">
-                <span>Москва, м. Кожуховская</span>
-                <span>Ежедневно 9:00 - 18:30</span>
-              </div>
-            </div>
-          </footer>
+          {/* Footer убран, так как он теперь в layout.tsx */}
         </main>
       </div>
     </div>
