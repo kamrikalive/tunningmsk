@@ -104,9 +104,9 @@ export default function Home() {
                 Работаем по всей России
               </div>
               
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight drop-shadow-xl text-white">
+              <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight drop-shadow-xl text-white">
                 Тюнинг, который <br/> меняет характер
-              </h1>
+              </h2>
               
               <p className="text-gray-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium drop-shadow-md text-shadow-sm">
                 Премиальные пороги и аксессуары для GAC, Geely, Kia. 
