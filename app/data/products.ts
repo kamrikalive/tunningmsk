@@ -110,13 +110,11 @@ export const products: Product[] = [
     oldPrice: 21000,
     image: `${CLOUD_URL}/5/photo_5422847153161310452_x.jpg`,
     images: [
-      `${CLOUD_URL}/5/photo_5422847153161310452_x.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309753_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309755_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309756_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309757_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309759_x.jpg`,
-      `${CLOUD_URL}/5/photo_5422847153161310447_y.jpg`
     ],
     features: ['OEM Style (Копия)', 'Защита от повреждений', 'Штатная установка', 'Облегчают посадку'],
     specifications: [
@@ -158,6 +156,8 @@ export const products: Product[] = [
     image: `${CLOUD_URL}/7/photo_5422847153161310448_y.jpg`,
     images: [
       `${CLOUD_URL}/7/photo_5422847153161310448_y.jpg`,
+      `${CLOUD_URL}/5/photo_5422847153161310452_x.jpg`,
+      `${CLOUD_URL}/5/photo_5422847153161310447_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161309758_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310450_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310451_y.jpg`,
