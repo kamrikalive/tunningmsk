@@ -173,5 +173,29 @@ export const products: Product[] = [
       { label: 'Нагрузка', value: '150 кг', icon: '💪' },
       { label: 'Комплект', value: 'Пороги + крепеж', icon: '📦' }
     ]
+  },
+
+  // --- 8. BMW X5 G05 Style Original (ОБЛАКО) ---
+  {
+    id: 'bmw-x5-g05-steps',
+    name: 'Пороги для BMW X5 G05 Style Original',
+    description: 'Боковые ступени (подножки) для внедорожника BMW Х5 G05 Style Original. Копия оригинальных порогов.',
+    price: 20000,
+    image: `${CLOUD_URL}/8/1.jpg`,
+    images: [
+      `${CLOUD_URL}/8/1.jpg`,
+      `${CLOUD_URL}/8/2.jpg`,
+      `${CLOUD_URL}/8/3.jpg`,
+      `${CLOUD_URL}/8/4.jpg`,
+      `${CLOUD_URL}/8/5.jpg`,
+      `${CLOUD_URL}/8/6.jpg`
+    ],
+    features: ['OEM Style (Копия)', 'Защита кузова', 'Штатная установка', 'Удобная посадка'],
+    specifications: [
+      { label: 'Кузов', value: 'BMW X5 G05', icon: '🚗' },
+      { label: 'Стиль', value: 'Original Style', icon: '✨' },
+      { label: 'Комплект', value: '2 порога + крепеж', icon: '📦' },
+      { label: 'Установка', value: 'Штатные места', icon: '🔧' }
+    ]
   }
 ];

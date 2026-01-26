@@ -1,8 +1,4 @@
-// app/page.tsx
-import Header from '@/components/Header';
-// У вас Header в layout, поэтому здесь он не нужен, убираем импорт если он был,
-// но судя по прошлому коду, вы хотели чистый page.tsx.
-// Оставляем только контент.
+
 
 import ProductCard from '@/components/ProductCard';
 import { products } from './data/products';
