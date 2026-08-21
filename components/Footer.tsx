@@ -81,6 +81,11 @@ export default function Footer() {
           <div className="mt-6 text-xs text-gray-700">
             &copy; {new Date().getFullYear()} TUNING MSK SHOP. Все права защищены.
           </div>
+          <div className="mt-2 text-xs text-gray-700">
+            <a href="https://relaxdev.ru/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline decoration-gray-700 hover:decoration-white underline-offset-4">
+              сайт размещен на relaxdev.ru
+            </a>
+          </div>
         </div>
       </div>
     </footer>
