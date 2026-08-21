@@ -2,7 +2,7 @@
 import { Product } from '../types';
 
 // 🔴 БАЗОВЫЙ ПУТЬ К ОБЛАКУ (БЕЗ /products, так как папки 4,5,6,7 лежат сразу в tunning)
-const CLOUD_URL = 'https://storage.yandexcloud.net/relaxdev/tunning';
+const CLOUD_URL = 'https://cdn.relaxdev.ru/tuning';
 
 export const products: Product[] = [
   // --- 1. Geely Okavango (ЛОКАЛЬНЫЕ ФОТО) ---
@@ -111,8 +111,6 @@ export const products: Product[] = [
     image: `${CLOUD_URL}/5/photo_5422847153161310452_x.jpg`,
     images: [
       `${CLOUD_URL}/5/photo_5422847153161309753_y.jpg`,
-      `${CLOUD_URL}/7/photo_5422847153161309758_y.jpg`,
-
       `${CLOUD_URL}/5/photo_5422847153161309755_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309756_y.jpg`,
       `${CLOUD_URL}/5/photo_5422847153161309757_y.jpg`,
@@ -156,12 +154,12 @@ export const products: Product[] = [
     oldPrice: 28000,
     image: `${CLOUD_URL}/7/photo_5422847153161310448_y.jpg`,
     images: [
+      `${CLOUD_URL}/7/photo_5422847153161310447_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310448_y.jpg`,
-      `${CLOUD_URL}/5/photo_5422847153161310452_x.jpg`,
-      `${CLOUD_URL}/5/photo_5422847153161310447_y.jpg`,
-      `${CLOUD_URL}/5/photo_5422847153161309759_x.jpg`,
+      `${CLOUD_URL}/7/photo_5422847153161310449_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310450_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310451_y.jpg`,
+      `${CLOUD_URL}/7/photo_5422847153161310452_x.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310453_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310454_y.jpg`,
       `${CLOUD_URL}/7/photo_5422847153161310455_y.jpg`
