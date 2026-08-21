@@ -11,7 +11,7 @@ export default function Header() {
         <div className="flex items-center gap-3 md:gap-4">
           <div className="relative h-10 w-10 md:h-12 md:w-12 flex-shrink-0 rounded-full overflow-hidden border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
             <Image 
-              src="https://storage.yandexcloud.net/relaxdev/tunning/logo.jpg" 
+              src="https://cdn.relaxdev.ru/tuning/1.png" 
               alt="TUNING MSK Logo" 
               fill
               className="object-cover"
